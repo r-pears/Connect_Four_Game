@@ -57,11 +57,15 @@ function placeInTable(y, x) {
 }
 
 function endGame(msg) {
-  alert(msg);
+  const winnerText = document.getElementById('winner');
+  gameOver = true;
+  winnerText.innerText = `${msg}`;
 }
 
 function handleClick(evt) {
-  if (!gameOver) {
+  if (gameOver) {
+    return;
+  } else {
     const x = +evt.target.id;
 
     const y = findSpotForCol(x);
@@ -73,16 +77,26 @@ function handleClick(evt) {
     board[y][x] = currPlayer;
 
     if (checkForWin()) {
-      gameOver = true;
-      return endGame(`Player ${currPlayer} won!`);
+      setTimeout(() => {
+        return endGame(`Player ${switchPlayer()} won!`);
+      }, 100);
     }
 
-    if (board.every((row) => row.every((square) => square))) {
-      gameOver = true;
+    if (checkForTie()) {
       return endGame('Tie!');
     }
 
-    currPlayer = currPlayer === 1 ? 2 : 1;
+    switchPlayer();
+  }
+}
+
+function switchPlayer() {
+  return (currPlayer = currPlayer === 1 ? 2 : 1);
+}
+
+function checkForTie() {
+  if (board.every((row) => row.every((square) => square))) {
+    return endGame('Tie!');
   }
 }
 
@@ -139,8 +153,12 @@ const startGame = () => {
 };
 
 const startButton = document.querySelector('#start');
+
 startButton.addEventListener('click', function () {
   if (!gameStarted) {
     startGame();
+    startButton.innerText = 'Finish Game';
+  } else {
+    location.reload();
   }
 });

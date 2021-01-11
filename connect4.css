@@ -13,6 +13,12 @@ h1 {
   color: #14274e;
 }
 
+#winner {
+  font-size: 2rem;
+  color: #14274e;
+  margin-top: 1rem;
+}
+
 #start {
   font-family: 'Amatic SC', cursive;
   font-size: 1.5rem;
